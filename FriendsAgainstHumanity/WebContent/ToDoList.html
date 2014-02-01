@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	
+		<title>To Do List</title>
+		
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dijit/themes/claro/claro.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojox/grid/resources/Grid.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojox/grid/resources/claroGrid.css" />
+		<style>
+			fieldset {
+				border: solid 1px lightGrey;
+				padding: 5px;
+			}
+			legend {
+				border: solid 1px lightGrey;
+				background: -moz-linear-gradient(#F4F8FA, #D1E0EB);
+				padding: 5px 20px;
+			}
+			button {
+				border: solid 1px lightGrey;
+				background: -moz-linear-gradient(#F4F8FA, #D1E0EB);
+				padding: 3px;
+				width: 24.5%
+			}
+			td {
+				padding: 5px;
+			}
+			#container {
+				width: 500px;
+				margin: 10px;
+			}
+		</style>
+		
+		<script>
+		    dojoConfig= {
+		        has: { "dojo-firebug": true },
+		        parseOnLoad: false,
+		        async: true,
+		        baseUrl: "./",
+		        packages: [{ name: "widget", location: "./widget" }]
+		    };
+		</script>
+		<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+		
+		<script>
+		require(["dojo/store/JsonRest",
+				 "dojo/store/Memory",
+				 "dojo/store/Cache",
+				 "dojox/grid/DataGrid",
+				 "dojo/data/ObjectStore",
+				 "dojo/query",
+				 "widget/CheckList.js",
+				 "dojo/domReady!"], 
+		function(JsonRest, Memory, Cache, DataGrid, ObjectStore, query, CheckList){
+
+			var toDoDataStore = new ObjectStore({objectStore: new Cache(JsonRest({target: 'data/toDo/', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
+			
+			var toDoCheckList = new CheckList({
+				store: toDoDataStore
+			}).placeAt(document.getElementById("checkListElement"));
+					
+			var gridLayout = [
+				{ name: 'ID', field: 'id', width: '25px'/*, hidden: true */},
+				{ name: 'Title', field: 'title', editable: true, width: '160px'},
+				{ name: 'Description', field: 'description', editable: true, width: '258px'}
+			];
+			
+			var grid = new DataGrid({
+				store: toDoDataStore,
+				structure: gridLayout,
+				keepRows: 1000,
+				rowsPerPage: 25
+			}, "gridElement");
+			grid.startup();
+			
+			query("#create").on("click", function() {
+				var title = query('#title').value;
+				toDoDataStore.newItem({'title':document.getElementById('title').value,'description':document.getElementById('description').value});
+				toDoDataStore.save();
+			});
+			
+			query("#read").on("click", function() {
+				//toDoDataStore.fetch();
+				grid.render();
+			});
+			
+			query("#update").on("click", function() {
+				toDoDataStore.save();
+			});
+			
+			query("#delete").on("click", function() {
+				var items = grid.selection.getSelected();
+				for(var i = 0; i < items.length; i++)
+					toDoDataStore.deleteItem(items[i]);
+				toDoDataStore.save();
+			});
+		});
+		</script>
+		
+	</head>
+	
+	<body class="claro">
+		<div id="container">
+			<div id="checkListElement"></div>
+			<div id="gridElement"></div>
+			<br />
+			<button id="create">Create</button>
+			<button id="read">Read</button>
+			<button id="update">Update</button>
+			<button id="delete">Delete</button>
+			<br /><br />
+			<fieldset>
+    			<legend>New Item:</legend>
+    			<table>
+    				<tr>
+    					<td>Title:</td>
+    					<td><input id="title" name="title" /></td>
+    				</tr>
+    				<tr>
+    					<td>Description:</td>
+    					<td><textarea id="description" name="description" cols=46 rows=3></textarea></td>
+    				</tr>
+    			</table>
+			</fieldset>
+		</div>
+	</body>
+</html>

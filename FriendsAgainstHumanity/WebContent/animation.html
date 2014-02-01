@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Animation Demo</title>
+		<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+		<script>
+			require(["dojo", "dojo/fx", "dojox/gfx", "dojox/gfx/utils", "dojox/gfx/fx", "dojo/domReady!"],
+			function (dojo, coreFx, gfx) {
+				function achievementAnimation(group, startPosition, endPosition, startSize, endSize) {
+					var zoomIn = dojox.gfx.fx.animateTransform({
+						shape: group,
+						duration: 1000,
+						transform: [{
+							name: "translate",
+							start: startPosition,
+							end: endPosition
+						}, {
+							name: "rotategAt",
+							start: [0, 0, 0],
+							end: [360, 50, 10]
+						}, {
+							name: "scale",
+							start: startSize,
+							end: endSize
+						}]
+					});
+					var wait = dojox.gfx.fx.animateTransform({
+						shape: group,
+						duration: 1000,
+						transform: [{
+							name: "translate",
+							start: endPosition,
+							end: endPosition
+						}, {
+							name: "scale",
+							start: endSize,
+							end: endSize
+						}]
+					});
+					var zoomOut = dojox.gfx.fx.animateTransform({
+						shape: group,
+						duration: 2000,
+						transform: [{
+							name: "translate",
+							start: endPosition,
+							end: startPosition
+						}, {
+							name: "rotategAt",
+							start: [-360, 50, 10],
+							end: [0, 0, 0]
+						}, {
+							name: "scale",
+							start: endSize,
+							end: startSize
+						}]
+					});
+					coreFx.chain([zoomIn, wait, zoomOut]).play();
+				}
+
+				dojo.xhrGet({
+					handleAs: 'json',
+					url: 'td.json',
+					load: function (json) {
+						var surface = dojox.gfx.createSurface("targetLocation", 250, 250);
+						var tdLogo = surface.createGroup();
+						dojox.gfx.utils.deserialize(tdLogo, json);
+						tdLogo.applyTransform(gfx.matrix.translate({
+							x: 25,
+							y: 25
+						}));
+						tdLogo.applyTransform(gfx.matrix.scale({
+							x: 0.05,
+							y: 0.05
+						}));
+						dojo.connect(tdLogo.getEventSource(), "onclick", function () {
+							achievementAnimation(
+								tdLogo, [14, 14], // startPosition
+								[40, 90], // endPosition
+								[0.05, 0.05], // startSize
+								[0.2, 0.2] // endSize
+							)
+						});
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="targetLocation"></div>
+	</body>
+</html>
