@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Animation Demo</title>
+		
+		<style type="text/css">
+			.card {
+				padding: 35px 26px;
+				margin: 10px;
+				width: 265px;
+				height: 394px;
+				-webkit-box-shadow: #BBB 10px 10px 10px;
+				-moz-box-shadow: #BBB 10px 10px 10px; 
+				box-shadow: #BBB 10px 10px 10px;"
+				-webkit-border-radius: 15px;
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+				border: 2px solid #000;
+				position: relative;
+			}
+			.white {
+				color: #000;
+				background: #FFF;
+			}
+			.black {
+				color: #FFF;
+				background: #000;
+			}
+			.cardText {
+				font: 27px Helvetica;
+				font-weight: 500;
+				letter-spacing: 0.5px;
+				word-spacing: 2px;
+			}
+			.cardFooter {
+				font: 11px Helvetica;
+				font-weight: 200;
+				position: absolute;
+				bottom: 0px;
+				padding: 20px 0px;
+				vertical-align: top;
+			}
+		</style>
+		
+		<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+		<script>
+			require(["dojo", "dojo/fx", "dojox/gfx", "dojo/dom-construct", "dojox/gfx/utils", "dojox/gfx/fx", "dojo/domReady!"],
+			function (dojo, coreFx, gfx, domConstruct) {
+				
+				function createCard(text, deck, color) {
+					var card = domConstruct.create("div");
+					if(color.toUpperCase() === "BLACK")
+						card.className = "black card";
+					else
+						card.className = "white card";
+					
+					var cardText =  domConstruct.create("div");
+					cardText.className = "cardText";
+					cardText.innerHTML = text;
+					
+					var footer =  domConstruct.create("div");
+					footer.className = "cardFooter";
+					footer.innerHTML = "<img src='img/cardLogo.png' /> " + deck;
+					
+					card.appendChild(cardText);
+					card.appendChild(footer);
+				
+					return card;
+				}
+				
+				var whiteCard = createCard("Leaving an awkward voicemail.", "Friends Against Humanity", "white");
+				dojo.place(whiteCard, "targetLocation");
+				var blackCard = createCard("What's the most emo?", "Friends Against Humanity", "black");
+				dojo.place(blackCard, "targetLocation");
+				
+				/* dojo.animateProperty({
+			        node: anim8target,
+			        properties: {
+			            top: : { start: 25, end: 150 },
+			            left: 0,
+			            opacity: { start: 1, end: 0 }
+			        },
+			        duration: 800
+			    }).play(); */
+
+			});
+		</script>
+	</head>
+	<body>
+		<div id="targetLocation" style="height: 200px;"></div>
+	</body>
+</html>
