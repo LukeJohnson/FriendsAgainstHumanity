@@ -36,6 +36,10 @@ public class CardService {
 		}
 	}
 
+	
+	
+	
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Card> list(){
@@ -53,6 +57,10 @@ public class CardService {
 		closeConnection(conn);
 		return cards;
 	}
+	
+	
+	
+	
 	
 	@GET
 	@Path("{id}")
@@ -73,5 +81,7 @@ public class CardService {
 		closeConnection(conn);
 		return card;
 	}
+	
+	
 	
 }
