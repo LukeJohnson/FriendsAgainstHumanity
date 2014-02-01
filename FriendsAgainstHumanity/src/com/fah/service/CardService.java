@@ -1,12 +1,16 @@
 package com.fah.service;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,7 +25,6 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.fah.db.DatabaseUtil;
 import com.fah.model.Card;
-import com.sun.jersey.api.core.ParentRef;
 
 @Path("/card")
 public class CardService {
@@ -86,6 +89,39 @@ public class CardService {
 		return respBuilder.build();
 	}
 	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response insert(Card card)throws URISyntaxException{
+		System.out.println("insert [id="+card.getId()+"]");
+		Connection conn = getConnection();
+		QueryRunner query = new QueryRunner();
+		int insertID = 0;
+		try{
+			insertID = query.update(conn, "insert into card(id, text, black, creatorId, deckId) values ?,?,?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		closeConnection(conn);
+		ResponseBuilder respBuilder = Response.created(new URI(Integer.toString(insertID)));
+		return respBuilder.build();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response update(Card card)throws URISyntaxException{
+		System.out.println("update [id="+card.getId()+"]");
+		Connection conn = getConnection();
+		QueryRunner query = new QueryRunner();
+		int updateID = 0;
+		try{
+			updateID = query.update(conn, "update card set id=? text=? black=? creatorId=? deckId=?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		closeConnection(conn);
+		ResponseBuilder respBuilder = Response.ok();
+		return respBuilder.build();
+	}
 	
 	
 }
