@@ -11,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -42,7 +44,7 @@ public class CardService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Card> list(){
+	public Response list(){
 		System.out.println("List");
 		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = getConnection();
@@ -55,7 +57,8 @@ public class CardService {
 			e.printStackTrace();
 		}
 		closeConnection(conn);
-		return cards;
+		ResponseBuilder resBuilder = Response.ok(cards);
+		return resBuilder.build();
 	}
 	
 	
@@ -64,7 +67,7 @@ public class CardService {
 	
 	@GET
 	@Path("{id}")
-	public Card get(@PathParam("id") int id){
+	public Response get(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
 		Connection conn = getConnection();
 		QueryRunner query = new QueryRunner();
@@ -79,7 +82,8 @@ public class CardService {
 			e.printStackTrace();
 		}
 		closeConnection(conn);
-		return card;
+		ResponseBuilder respBuilder = Response.ok(card);
+		return respBuilder.build();
 	}
 	
 	
