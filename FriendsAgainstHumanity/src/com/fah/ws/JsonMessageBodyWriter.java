@@ -12,6 +12,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 /**
  * Converts Java Objects to JSON data
@@ -36,8 +37,9 @@ public class JsonMessageBodyWriter implements MessageBodyWriter {
 
 	@Override
 	public void writeTo(Object target, Class type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap httpHeaders, OutputStream outputStream) throws IOException {
-
-		new ObjectMapper().writeValue(outputStream, target);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+		mapper.writeValue(outputStream, target);
 	}
 
 }
