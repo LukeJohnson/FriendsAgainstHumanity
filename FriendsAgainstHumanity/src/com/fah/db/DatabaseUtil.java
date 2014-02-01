@@ -8,7 +8,7 @@ public class DatabaseUtil {
 
 	private static String dbURL = "jdbc:derby:FAHDB;create=true";
 	
-	private static Connection createConnection() {
+	public static Connection getConnection() {
 		try{
 			String myDriver = "org.gjt.mm.mysql.Driver";
 			  String myUrl = "jdbc:mysql://10.1.1.17/fah";
@@ -22,8 +22,4 @@ public class DatabaseUtil {
 	}
 
 	
-	public static void main(String[] args) {
-		Connection conn = DatabaseUtil.createConnection();
-		System.out.println(conn);
-	}
 }
