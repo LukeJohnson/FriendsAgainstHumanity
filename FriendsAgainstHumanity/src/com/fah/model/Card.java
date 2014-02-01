@@ -7,6 +7,7 @@ public class Card {
 	private String text;
 	private boolean black;
 	private int     creatorId;
+	private int		deckId;
 	
 	public int getId() {
 		return id;
@@ -40,7 +41,13 @@ public class Card {
 		this.black = black;
 	}
 	
+	public int getDeckId() {
+		return deckId;
+	}
 	
+	public void setDeckId(int deckId) {
+		this.deckId = deckId;
+	}
 	
 	
 }
