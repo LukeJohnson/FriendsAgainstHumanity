@@ -58,9 +58,9 @@
 
 			var toDoDataStore = new ObjectStore({objectStore: new Cache(JsonRest({target: 'data/toDo/', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
 			
-			var toDoCheckList = new CheckList({
+/* 			var toDoCheckList = new CheckList({
 				store: toDoDataStore
-			}).placeAt(document.getElementById("checkListElement"));
+			}).placeAt(document.getElementById("checkListElement")); */
 					
 			var gridLayout = [
 				{ name: 'ID', field: 'id', width: '25px'/*, hidden: true */},
