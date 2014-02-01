@@ -1,5 +1,7 @@
 package com.fah.model;
 
+import java.util.Date;
+
 
 public class Card {
 
@@ -8,6 +10,7 @@ public class Card {
 	private boolean black;
 	private int     creatorId;
 	private int		deckId;
+	private Date 	created;
 	
 	public int getId() {
 		return id;
@@ -49,5 +52,7 @@ public class Card {
 		this.deckId = deckId;
 	}
 	
-	
+	public Date getCreated(){
+		return created;
+	}
 }
