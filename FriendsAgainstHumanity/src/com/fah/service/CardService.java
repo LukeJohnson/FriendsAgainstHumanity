@@ -84,7 +84,7 @@ public class CardService {
 		QueryRunner query = new QueryRunner();
 		int insertID = 0;
 		try{
-			insertID = query.update(conn, "insert into card(id, text, black, creatorId, deckId) values ?,?,?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+			insertID = query.update(conn, "insert into cards(id, text, black, creatorId, deckId) values ?,?,?,?,?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
