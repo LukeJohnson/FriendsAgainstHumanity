@@ -22,4 +22,13 @@ public class DatabaseUtil {
 	}
 
 	
+	
+	public static void closeConnection(Connection conn){
+		try{
+			conn.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 }

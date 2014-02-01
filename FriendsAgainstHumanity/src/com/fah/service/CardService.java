@@ -17,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.xml.crypto.Data;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -29,20 +30,6 @@ import com.fah.model.Card;
 @Path("/card")
 public class CardService {
 	
-	private Connection getConnection(){
-		return DatabaseUtil.getConnection();
-	}
-	
-	private void closeConnection(Connection conn){
-		try{
-			conn.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-	}
-
-	
-	
 	
 	
 	@GET
@@ -50,7 +37,7 @@ public class CardService {
 	public Response list(){
 		System.out.println("List");
 		ArrayList<Card> cards = new ArrayList<Card>();
-		Connection conn = getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
 		ResultSetHandler<List<Card>> handler= new BeanListHandler<Card>(Card.class);
 		try{
@@ -59,7 +46,7 @@ public class CardService {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		closeConnection(conn);
+		DatabaseUtil.closeConnection(conn);
 		ResponseBuilder resBuilder = Response.ok(cards);
 		return resBuilder.build();
 	}
@@ -72,7 +59,7 @@ public class CardService {
 	@Path("{id}")
 	public Response get(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
-		Connection conn = getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
 		BeanHandler<Card> handler = new BeanHandler<Card>(Card.class);
 		Card card = new Card();
@@ -84,7 +71,7 @@ public class CardService {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		closeConnection(conn);
+		DatabaseUtil.closeConnection(conn);
 		ResponseBuilder respBuilder = Response.ok(card);
 		return respBuilder.build();
 	}
@@ -93,7 +80,7 @@ public class CardService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response insert(Card card)throws URISyntaxException{
 		System.out.println("insert [id="+card.getId()+"]");
-		Connection conn = getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
 		int insertID = 0;
 		try{
@@ -101,7 +88,7 @@ public class CardService {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		closeConnection(conn);
+		DatabaseUtil.closeConnection(conn);
 		ResponseBuilder respBuilder = Response.created(new URI(Integer.toString(insertID)));
 		return respBuilder.build();
 	}
@@ -110,7 +97,7 @@ public class CardService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(Card card)throws URISyntaxException{
 		System.out.println("update [id="+card.getId()+"]");
-		Connection conn = getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
 		int updateID = 0;
 		try{
@@ -118,7 +105,7 @@ public class CardService {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		closeConnection(conn);
+		DatabaseUtil.closeConnection(conn);
 		ResponseBuilder respBuilder = Response.ok();
 		return respBuilder.build();
 	}
