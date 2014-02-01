@@ -8,6 +8,7 @@ import javax.ws.rs.core.Application;
 
 import com.fah.service.CardService;
 import com.fah.service.VoteService;
+import com.fah.service.DeckService;
 
 @ApplicationPath("/fah")
 public class CardsApplication extends Application{
@@ -16,6 +17,7 @@ public class CardsApplication extends Application{
 		Set<Class<?>> s = new HashSet<Class<?>>();
 		s.add(CardService.class);
 		s.add(VoteService.class);
+		s.add(DeckService.class);
 		s.add(JsonMessageBodyWriter.class);
 		s.add(JsonMessageBodyReader.class);
 		return s;
