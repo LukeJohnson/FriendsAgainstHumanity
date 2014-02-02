@@ -1,12 +1,5 @@
 package com.fah.service;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.xml.crypto.Data;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -26,6 +18,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.fah.db.DatabaseUtil;
 import com.fah.model.Card;
+import com.mysql.jdbc.Connection;
 
 @Path("/card")
 public class CardService {
