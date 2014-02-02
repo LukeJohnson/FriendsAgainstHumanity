@@ -48,7 +48,7 @@ public class DeckService {
 		ResponseBuilder respBuilder = Response.ok(decks);
 		return respBuilder.build();
 	}
-	
+
 	
 	@GET
 	@Path("{id}")
@@ -59,7 +59,7 @@ public class DeckService {
 		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
 		Deck deck = new Deck();
 		try{
-			Deck result = query.query(conn, "SELECT * FROM decks where id = ?", handler, id);
+			Deck result = query.query(conn, "SELECT * FROM cards where id = ?", handler, id);
 			if(result != null){
 				deck = result;
 			}
@@ -70,6 +70,48 @@ public class DeckService {
 		ResponseBuilder respBuilder = Response.ok(deck);
 		return respBuilder.build();
 	}
+	
+	@GET
+	@Path("{id}/black")
+	public Response get(@PathParam("id") int id){
+		System.out.println("Get [id="+id+"]");
+		Connection conn = DatabaseUtil.getConnection();
+		QueryRunner query = new QueryRunner();
+		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
+		Deck deck = new Deck();
+		try{
+			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND white = true", handler, id);
+			if(result != null){
+				deck = result;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		DatabaseUtil.closeConnection(conn);
+		ResponseBuilder respBuilder = Response.ok(deck);
+		return respBuilder.build();
+	}
+	@GET
+	@Path("{id}/white")
+	public Response get(@PathParam("id") int id){
+		System.out.println("Get [id="+id+"]");
+		Connection conn = DatabaseUtil.getConnection();
+		QueryRunner query = new QueryRunner();
+		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
+		Deck deck = new Deck();
+		try{
+			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND back = false", handler, id);
+			if(result != null){
+				deck = result;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		DatabaseUtil.closeConnection(conn);
+		ResponseBuilder respBuilder = Response.ok(deck);
+		return respBuilder.build();
+	}
+	
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
