@@ -1,12 +1,5 @@
 package com.fah.service;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,6 +18,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.fah.db.DatabaseUtil;
 import com.fah.model.Deck;
+import com.mysql.jdbc.Connection;
 
 @Path("/deck")
 public class DeckService {
