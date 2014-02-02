@@ -12,15 +12,10 @@
 		<style>
 			
 			
-			td {
-				padding: 5px;
-			}
 			#container {
-				width: 50%;
+				width: 450px;
 				margin: 10px;
 			}
-			.card{margin-right:75px;margin-bottom:20px;height:320px;border:2px solid #A0A0A0;width:230px;border:2px solid #A0A0A0;background-color:#EEEEEE;position:relative;display:inline-block;}
-			.cardText{font-family:HelveticaNeue-CondensedBold; font-size:30px;}
 			.upvoteButton{width:75px;}
 		</style>
 		
@@ -34,12 +29,6 @@
 		    };
 		</script>
 		<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
-		
-		
-		
-		
-		
-		
 		
 		<style type="text/css">
 			.card {
@@ -69,6 +58,7 @@
 				font-weight: 500;
 				letter-spacing: 0.5px;
 				word-spacing: 2px;
+				line-height: 40px;
 			}
 			.cardFooter {
 				font: 11px Helvetica;
@@ -79,9 +69,6 @@
 				vertical-align: top;
 			}
 		</style>
-		
-		
-		
 		
 		<script>
 		require(["dojo/store/JsonRest",
@@ -97,61 +84,60 @@
 				 "dojox/gfx/utils", 
 				 "dojox/gfx/fx",
 				 "dojo/domReady!"], 
-		function(JsonRest, Memory, Cache, DataGrid, ObjectStore, query, dojo, coreFx, gfx, domConstruct){
-			
-			
+		function(JsonRest, Memory, Cache, DataGrid, ObjectStore, query, dojo, coreFx, gfx, domConstruct){		
 
-			var toDoDataStore = new ObjectStore({objectStore: new Cache(JsonRest({target: '../fah/card', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
-			
-/* 			var toDoCheckList = new CheckList({
-				store: toDoDataStore
-			}).placeAt(document.getElementById("checkListElement")); */
-					
-			var gridLayout = [
-				{ name: 'ID', field: 'id', width: '25px'/*, hidden: true */},
-				{ name: 'Title', field: 'text', editable: true, width: '350px', formatter: placeCard},
-				{ name: 'Rank', field: 'id', editable: false, width: '100px', formatter: formatRank}
+			var toDoDataStoreWhite = new ObjectStore({objectStore: new Cache(JsonRest({target: '../fah/deck/1/white', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
+			var toDoDataStoreBlack = new ObjectStore({objectStore: new Cache(JsonRest({target: '../fah/deck/1/black', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
+
+	
+			var gridLayoutWhite = [
+				{ name: 'card', field: 'id', editable: true, width: '350px', formatter: placeCardWhite},
+				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRank}
 			];
 			
-			var grid = new DataGrid({
-				store: toDoDataStore,
-				structure: gridLayout,
+			var gridLayoutBlack = [
+  				{ name: 'card', field: 'id', editable: true, width: '350px', formatter: placeCardBlack},
+  				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRank}
+  			];
+			
+			var gridWhite = new DataGrid({
+				store: toDoDataStoreWhite,
+				structure: gridLayoutWhite,
 				keepRows: 1000,
 				rowsPerPage: 25,
-				autoHeight: 25
-			}, "gridElement");
-			grid.startup();
+			}, "gridWhite");
+			gridWhite.startup();
 			
+			var gridBlack = new DataGrid({
+				store: toDoDataStoreBlack,
+				structure: gridLayoutBlack,
+				keepRows: 1000,
+				rowsPerPage: 25,
+			}, "gridBlack");
+			gridBlack.startup();
 			
-			function placeCard(data) {
-				
-				//var obj = toDoDataStore.fetch;
-				
-				return createCard(data, "Friends Against Humanity", "black");
+			function placeCardWhite(data, rowIndex) {			
+				var rowdata = gridWhite.getItem(rowIndex);
+				return createCard(rowdata.text, "Friends Against Humanity", rowdata.black).outerHTML;
 			}
 			
-			function formatTitle(data) {
-				
-				return "<div id='cardRow"+ data +"'></div>";
-				
-			} 
-			
+			function placeCardBlack(data, rowIndex) {
+				var rowdata = gridBlack.getItem(rowIndex);
+				return createCard(rowdata.text, "Friends Against Humanity", rowdata.black).outerHTML;
+			}
 			
 			function formatRank(data) {
-				
-				return"<button class='upvoteButton' onclick='upVote(" + data + ")'>upvote</button>";
+				return"<button class='upvoteButton' onclick='upVote(" + data + ")'>upvote</button><br/><button class='upvoteButton' onclick='upVote(" + data + ")'>downvote</button>";
 			}
 			function upVote(data){alert("upvote " + data);}
 			
 			
-			function createCard(){
-				createCard("TEST", "Time", "fun");
-			}
-			
-			function createCard(text, deck, color) {
+			function createCard(text, deck, isBlack) {
 				var card = domConstruct.create("div");
-				if(color.toUpperCase() === "BLACK")
+				//card.setAttribute("id", "card_" + id);
+				if(isBlack)
 					card.className = "black card";
+				else
 					card.className = "white card";
 				
 				var cardText =  domConstruct.create("div");
@@ -165,25 +151,31 @@
 				card.appendChild(cardText);
 				card.appendChild(footer);
 			
-				return card.outerHTML;
+				return card;
 			}
 					
 		});
 		
-		
 		</script>
-		
-		
-		
-		
-		
 		
 	</head>
 	
 	<body class="claro">
-		<div id="container">
-			<div id="gridElement" style="height:100%;"></div>
-			
-		</div>
+	<table>
+		<tr>
+			<td>
+				<div id="container" style="width: 470px; height: 700px;">
+					<div id="gridBlack" ></div>			
+				</div>
+			</td>
+			<td>
+				<div id="container" style="width: 470px; height: 700px;">
+					<div id="gridWhite" ></div>			
+				</div>
+			</td>
+		</tr>
+	</table>
+		
+		
 	</body>
 </html>
