@@ -126,10 +126,10 @@
 				return createCard(rowdata.text, "Friends Against Humanity", rowdata.black).outerHTML;
 			}
 			
+			
 			function formatRank(data) {
-				return"<button class='upvoteButton' onclick='upVote(" + data + ")'>upvote</button><br/><button class='upvoteButton' onclick='upVote(" + data + ")'>downvote</button>";
+				return"<button class='upvoteButton' onclick='upVote(" + data + ");'>upvote</button><br/><button class='upvoteButton' onclick='downVote(" + data + ")'>downvote</button>";
 			}
-			function upVote(data){alert("upvote " + data);}
 			
 			
 			function createCard(text, deck, isBlack) {
@@ -155,7 +155,16 @@
 			}
 					
 		});
-		
+		function upVote(data){
+			xmlhttp=new XMLHttpRequest();
+			xmlhttp.open("POST","../fah/vote/" + data + "/1",true);
+			xmlhttp.send();
+		}
+		function downVote(data){
+			xmlhttp=new XMLHttpRequest();
+			xmlhttp.open("POST","../fah/vote/" + data + "/0",true);
+			xmlhttp.send();
+		}
 		</script>
 		
 	</head>
