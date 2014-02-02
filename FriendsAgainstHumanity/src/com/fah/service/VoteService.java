@@ -27,21 +27,35 @@ public class VoteService {
 		return respBuilder.build();
 	}
 	
+	
+	/*
+	 * TO-DO: Create Vote Constructor to parse the URL string
+	 *  - Send cardId from Path
+	 * 	- up/down should be in URL
+	 *  - vote_id will be returned from queryVote to updateVoteId
+	 */
 	@PUT
 	@Path("{cardId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response castVote(Vote vote)throws URISyntaxException{
 		Connection conn = DatabaseUtil.getConnection();
-		QueryRunner query = new QueryRunner();
-		int updateId = -1;
+		QueryRunner queryVote = new QueryRunner();
+		QueryRunner queryCard = new QueryRunner();
+		int updateVoteId = -1;
+		int updateVoteCount = -1;
 		try{
-			updateId = query.update(conn, "insert into votes(card_id, up_vote, voter_id) values ?,  ?, ?",vote.getCard_id(), vote.isUp_vote(), vote.getVoter_id());
+			updateVoteId = queryVote.update(conn, "INSERT INTO votes(card_id, up_vote, voter_id) VALUES ?, ?, ?", vote.getCard_id(), vote.isUp_vote(), vote.getVoter_id());
+			if(vote.isUp_vote()){
+				updateVoteCount = queryCard.update(conn, "UPDATE cards SET upvote = upvote + 1 WHERE id=?", vote.getCard_id());
+			}else{
+				updateVoteCount = queryCard.update(conn, "UPDATE cards SET downvote = downvote + 1 WHERE id=?", vote.getCard_id());
+			}
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		DatabaseUtil.closeConnection(conn);
-		ResponseBuilder respBuiltder = Response.created(new URI(Integer.toString(updateId)));
-		return respBuiltder.build();
+		ResponseBuilder respBuilder = Response.created(new URI(Integer.toString(updateVoteId)));
+		return respBuilder.build();
 	}
 	
 	

@@ -1,5 +1,12 @@
 package com.fah.service;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,7 +25,6 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.fah.db.DatabaseUtil;
 import com.fah.model.Card;
-import com.mysql.jdbc.Connection;
 
 @Path("/card")
 public class CardService {
@@ -47,7 +53,6 @@ public class CardService {
 	
 	
 	
-	
 	@GET
 	@Path("{id}")
 	public Response get(@PathParam("id") int id){
@@ -57,7 +62,7 @@ public class CardService {
 		BeanHandler<Card> handler = new BeanHandler<Card>(Card.class);
 		Card card = new Card();
 		try{
-			Card result= query.query(conn, "SELECT * FROM cards where id = ?", handler, id);
+			Card result= query.query(conn, "SELECT * FROM cards WHERE id = ?", handler, id);
 			if(result != null){
 				card = result;
 			}
@@ -77,7 +82,7 @@ public class CardService {
 		QueryRunner query = new QueryRunner();
 		int insertID = 0;
 		try{
-			insertID = query.update(conn, "insert into cards(id, text, black, creatorId, deckId) values ?,?,?,?,?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+			insertID = query.update(conn, "INSERT INTO cards(id, text, black, creatorId, deckId) VALUES ?,?,?,?,?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -94,7 +99,7 @@ public class CardService {
 		QueryRunner query = new QueryRunner();
 		int updateID = 0;
 		try{
-			updateID = query.update(conn, "update cards set id=?, text=?, black=?, creatorId=?, deckId=?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+			updateID = query.update(conn, "UPDATE cards SET text=?, black=?, creatorId=?, deckId=? WHERE id=?", card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId(), card.getId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
