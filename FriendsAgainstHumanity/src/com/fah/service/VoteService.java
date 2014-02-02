@@ -27,6 +27,13 @@ public class VoteService {
 		return respBuilder.build();
 	}
 	
+	
+	/*
+	 * TO-DO: Create Vote Constructor to parse the URL string
+	 *  - Send cardId from Path
+	 * 	- up/down should be in URL
+	 *  - vote_id will be returned from queryVote to updateVoteId
+	 */
 	@PUT
 	@Path("{cardId}")
 	@Consumes(MediaType.APPLICATION_JSON)
