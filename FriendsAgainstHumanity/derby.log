@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat Feb 01 13:16:40 EST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0143-eeaa-b1da-000000520718 
+on database directory /Users/jmguillemette/git/FriendsAgainstHumanity/FriendsAgainstHumanity/FAHDB with class loader sun.misc.Launcher$AppClassLoader@6647108e 
+Loaded from file:/Users/jmguillemette/git/FriendsAgainstHumanity/FriendsAgainstHumanity/WebContent/WEB-INF/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_10-b18
+user.dir=/Users/jmguillemette/git/FriendsAgainstHumanity/FriendsAgainstHumanity
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.9.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
