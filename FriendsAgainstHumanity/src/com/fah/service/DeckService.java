@@ -75,7 +75,7 @@ public class DeckService {
 	@GET
 	@Path("{id}/black")
 	public Response getBlackDeck(@PathParam("id") int id){
-		System.out.println("Get [id="+id+"]");
+		System.out.println("Get [black deck id="+id+"]");
 		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
@@ -93,7 +93,7 @@ public class DeckService {
 	@GET
 	@Path("{id}/white")
 	public Response getWhiteDeck(@PathParam("id") int id){
-		System.out.println("Get [id="+id+"]");
+		System.out.println("Get [white deck id="+id+"]");
 		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
@@ -116,9 +116,9 @@ public class DeckService {
 		System.out.println("insert [id="+deck.getId()+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
-		int insertID = 0;
+		int insertID = -1;
 		try{
-			insertID = query.update(conn, "insert into decks(id, name, descr, creatorId) values ?,?,?,?", deck.getId(), deck.getName(), deck.getDescr(), deck.getCreatorId());
+			insertID = query.update(conn, "INSERT INTO decks(id, name, descr, creatorId) VALUES ?,?,?,?", deck.getId(), deck.getName(), deck.getDescr(), deck.getCreatorId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -133,9 +133,9 @@ public class DeckService {
 		System.out.println("update [id="+deck.getId()+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
-		int updateID = 0;
+		int updateID = -1;
 		try{
-			updateID = query.update(conn, "update decks set id=?, name=?, descr=?, creatorId=?", deck.getId(), deck.getName(), deck.getDescr(), deck.getCreatorId());
+			updateID = query.update(conn, "UPDATE decks SET name=?, descr=?, creatorId=? WHERE id=?", deck.getName(), deck.getDescr(), deck.getCreatorId(), deck.getId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
