@@ -35,7 +35,7 @@ public class CardService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list(){
-		System.out.println("List");
+		System.out.println("List cards");
 		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();

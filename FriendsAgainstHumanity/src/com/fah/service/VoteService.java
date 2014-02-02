@@ -44,4 +44,23 @@ public class VoteService {
 		return respBuiltder.build();
 	}
 	
+	
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response vote(Vote vote){
+		System.out.println("update [id="+deck.getId()+"]");
+		Connection conn = DatabaseUtil.getConnection();
+		QueryRunner query = new QueryRunner();
+		int updateID = 0;
+		try{
+			updateID = query.update(conn, "update cards set id=?, name=?, descr=?, creatorId=?", deck.getId(), deck.getName(), deck.getDescr(), deck.getCreatorId());
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		DatabaseUtil.closeConnection(conn);
+		ResponseBuilder respBuilder = Response.ok(deck);
+		return respBuilder.build();
+	}
+	
 } 

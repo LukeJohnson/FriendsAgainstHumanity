@@ -33,7 +33,7 @@ public class DeckService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list(){
-		System.out.println("List");
+		System.out.println("List Decks");
 		ArrayList<Deck> decks = new ArrayList<Deck>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
