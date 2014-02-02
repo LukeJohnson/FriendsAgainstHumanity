@@ -24,6 +24,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.fah.db.DatabaseUtil;
+import com.fah.model.Card;
 import com.fah.model.Deck;
 
 @Path("/deck")
@@ -33,7 +34,7 @@ public class DeckService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list(){
-		System.out.println("List");
+		System.out.println("List Decks");
 		ArrayList<Deck> decks = new ArrayList<Deck>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
@@ -52,14 +53,14 @@ public class DeckService {
 	
 	@GET
 	@Path("{id}")
-	public Response get(@PathParam("id") int id){
+	public Response getDeckInfo(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
 		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
 		Deck deck = new Deck();
 		try{
-			Deck result = query.query(conn, "SELECT * FROM cards where id = ?", handler, id);
+			Deck result = query.query(conn, "SELECT * FROM cards WHERE id = ?", handler, id);
 			if(result != null){
 				deck = result;
 			}
@@ -73,42 +74,38 @@ public class DeckService {
 	
 	@GET
 	@Path("{id}/black")
-	public Response get(@PathParam("id") int id){
+	public Response getBlackDeck(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
+		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
-		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
-		Deck deck = new Deck();
+		ResultSetHandler<List<Card>> handler= new BeanListHandler<Card>(Card.class);
 		try{
-			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND black = true", handler, id);
-			if(result != null){
-				deck = result;
-			}
+			List<Card> result  = query.query(conn, "SELECT * FROM cards WHERE deck_id = ? AND black = true", handler, id);
+			cards.addAll(result);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		DatabaseUtil.closeConnection(conn);
-		ResponseBuilder respBuilder = Response.ok(deck);
+		ResponseBuilder respBuilder = Response.ok(cards);
 		return respBuilder.build();
 	}
 	@GET
 	@Path("{id}/white")
-	public Response get(@PathParam("id") int id){
+	public Response getWhiteDeck(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
+		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
-		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
-		Deck deck = new Deck();
+		ResultSetHandler<List<Card>> handler= new BeanListHandler<Card>(Card.class);
 		try{
-			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND back = false", handler, id);
-			if(result != null){
-				deck = result;
-			}
+			List<Card> result  = query.query(conn, "SELECT * FROM cards WHERE deck_id = ? AND black = false", handler, id);
+			cards.addAll(result);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		DatabaseUtil.closeConnection(conn);
-		ResponseBuilder respBuilder = Response.ok(deck);
+		ResponseBuilder respBuilder = Response.ok(cards);
 		return respBuilder.build();
 	}
 	

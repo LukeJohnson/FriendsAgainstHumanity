@@ -17,7 +17,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.xml.crypto.Data;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -35,7 +34,7 @@ public class CardService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list(){
-		System.out.println("List");
+		System.out.println("List cards");
 		ArrayList<Card> cards = new ArrayList<Card>();
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
