@@ -5,19 +5,16 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.dbutils.QueryRunner;
 
 import com.fah.db.DatabaseUtil;
-import com.fah.model.Vote;
 
 @Path("/vote")
 public class VoteService {
@@ -35,7 +32,7 @@ public class VoteService {
 	 * 	- up/down should be in URL
 	 *  - vote_id will be returned from queryVote to updateVoteId
 	 */
-	@PUT
+	@POST
 	@Path("{cardId}/{vote}")
 	public Response castVote(@PathParam("cardId") int id, @PathParam("vote") int vote)throws URISyntaxException{
 		Connection conn = DatabaseUtil.getConnection();
@@ -47,8 +44,11 @@ public class VoteService {
 			updateVoteId = queryVote.update(conn, "INSERT INTO votes(card_id, up_vote, voter_id) VALUES (?, ?, ?)",id, vote, 1);
 			if(vote == 1){
 				updateVoteCount = queryCard.update(conn, "UPDATE cards SET upvotes = upvotes + 1 WHERE id=?", id);
+				System.out.println("upvote cardID: " + id);
 			}else if(vote == 0){
 				updateVoteCount = queryCard.update(conn, "UPDATE cards SET downvotes = downvotes + 1 WHERE id=?", id);
+				System.out.println("downvote cardID: " + id);
+
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
