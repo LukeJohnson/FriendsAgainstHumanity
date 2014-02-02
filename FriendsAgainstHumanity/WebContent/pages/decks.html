@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	
+	
+	<style type="text/css">
+			.deck {
+				padding: 35px 26px;
+				margin: 15px;
+				width: 265px;
+				height: 394px;
+				-webkit-box-shadow: #BBB 10px 10px 10px;
+				-moz-box-shadow: #BBB 10px 10px 10px; 
+				box-shadow: #BBB 10px 10px 10px;"
+				-webkit-border-radius: 15px;
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+				border: 2px solid #000;
+				position: relative;
+				color: #FFF;
+				background: #000;
+			}
+			.cardText {
+				font: 27px Helvetica;
+				font-weight: 500;
+				letter-spacing: 0.5px;
+				word-spacing: 2px;
+				line-height: 40px;
+			}
+			.cardFooter {
+				font: 11px Helvetica;
+				font-weight: 200;
+				position: absolute;
+				bottom: 0px;
+				padding: 0px 20px 20px 0px;
+				vertical-align: top;
+			}
+		</style>
+	
+	
+	<script>
+	    dojoConfig= {
+	        has: { "dojo-firebug": true },
+	        parseOnLoad: false,
+	        async: true,
+	        baseUrl: "./",
+	        packages: [{ name: "widget", location: "./widget" }]
+	    };
+	</script>
+	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+	<script type="text/javascript">
+	
+	
+	require([ "../widget/deckWidget.js", "dojo/request","dojo/_base/array", "dojo/_base/declare", "dojo/dom-construct", "dojo/dom", "dojo/parser", "dojo/ready",
+	         "dijit/_WidgetBase", "dojo/_base/window"], 
+	         function(Deck, request, arrayUtil, declare, domConstruct, dom, parser, ready,_WidgetBase){
+	         ready(function(){
+	        	 
+	        	 request("/FriendsAgainstHumanity/fah/deck", {
+	        	        handleAs: "json"
+	        	    }).then(function(decks){
+	        	        // Get a reference to our container
+						
+	        	 
+						var deckTable = dom.byId("deckTable");
+						var row = domConstruct.create("tr");
+						var deckContainer = dom.byId("deckDiv");
+			     			
+	        	        arrayUtil.forEach(decks, function(deck){
+
+			     			var column =  domConstruct.create("td");
+
+			     			 // Create our widget and place it
+			     			column.innerHTML = new Deck(deck).domNode.outerHTML;
+			     			row.appendChild(column);
+			     			deckTable.appendChild(row);         
+	        	        });
+	        	    });	        	 
+	         });
+	     });
+	
+	</script>
+	</head>
+	<body>
+	<div id="deckDiv"></div>
+	<table id="deckTable">
+	</table>
+	</body>
+</html>
