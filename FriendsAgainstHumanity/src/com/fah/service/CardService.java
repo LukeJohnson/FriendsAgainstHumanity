@@ -101,7 +101,7 @@ public class CardService {
 		QueryRunner query = new QueryRunner();
 		int updateID = 0;
 		try{
-			updateID = query.update(conn, "update card set id=? text=? black=? creatorId=? deckId=?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
+			updateID = query.update(conn, "update cards set id=?, text=?, black=?, creatorId=?, deckId=?", card.getId(), card.getText(), card.isBlack(), card.getCreatorId(), card.getDeckId());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
