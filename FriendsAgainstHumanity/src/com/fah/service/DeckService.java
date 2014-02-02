@@ -81,7 +81,7 @@ public class DeckService {
 		QueryRunner query = new QueryRunner();
 		ResultSetHandler<List<Card>> handler= new BeanListHandler<Card>(Card.class);
 		try{
-			List<Card> result  = query.query(conn, "SELECT * FROM cards where deck_id = ? AND black = true", handler, id);
+			List<Card> result  = query.query(conn, "SELECT * FROM cards WHERE deck_id = ? AND black = true", handler, id);
 			cards.addAll(result);
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -99,7 +99,7 @@ public class DeckService {
 		QueryRunner query = new QueryRunner();
 		ResultSetHandler<List<Card>> handler= new BeanListHandler<Card>(Card.class);
 		try{
-			List<Card> result  = query.query(conn, "SELECT * FROM cards where deck_id = ? AND back = false", handler, id);
+			List<Card> result  = query.query(conn, "SELECT * FROM cards WHERE deck_id = ? AND black = false", handler, id);
 			cards.addAll(result);
 		}catch(SQLException e){
 			e.printStackTrace();
