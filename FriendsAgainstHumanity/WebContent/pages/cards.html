@@ -92,12 +92,12 @@
 	
 			var gridLayoutWhite = [
 				{ name: 'card', field: 'id', editable: true, width: '350px', formatter: placeCardWhite},
-				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRank}
+				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRankWhite}
 			];
 			
 			var gridLayoutBlack = [
   				{ name: 'card', field: 'id', editable: true, width: '350px', formatter: placeCardBlack},
-  				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRank}
+  				{ name: 'vote', field: 'id', editable: false, width: '100px', formatter: formatRankBlack}
   			];
 			
 			var gridWhite = new DataGrid({
@@ -126,11 +126,14 @@
 				return createCard(rowdata.text, "Friends Against Humanity", rowdata.black).outerHTML;
 			}
 			
-			
-			function formatRank(data) {
-				return"<button class='upvoteButton' onclick='upVote(" + data + ");'>upvote</button><br/><button class='upvoteButton' onclick='downVote(" + data + ")'>downvote</button>";
+			function formatRankWhite(data, rowIndex) {
+				var rowdata = gridWhite.getItem(rowIndex);
+				return"<span>upvotes = "+ rowdata.upvotes +"</span><br/><span>downvotes = "+ rowdata.downvotes +"</span><button class='upvoteButton' onclick='upVote(" + data + ");'>upvote</button><br/><button class='upvoteButton' onclick='downVote(" + data + ")'>downvote</button>";
 			}
-			
+			function formatRankBlack(data, rowIndex) {
+				var rowdata = gridBlack.getItem(rowIndex);
+				return"<span>upvotes = "+ rowdata.upvotes +"</span><br/><span>downvotes = "+ rowdata.downvotes +"</span><button class='upvoteButton' onclick='upVote(" + data + ");'>upvote</button><br/><button class='upvoteButton' onclick='downVote(" + data + ")'>downvote</button>";
+			}
 			
 			function createCard(text, deck, isBlack) {
 				var card = domConstruct.create("div");
