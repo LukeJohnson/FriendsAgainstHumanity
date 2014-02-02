@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	
+		<title>Friends Against Humanity Deck</title>
+		
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/resources/dojo.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dijit/themes/claro/claro.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojox/grid/resources/Grid.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojox/grid/resources/claroGrid.css" />
+		<style>
+			
+			
+			td {
+				padding: 5px;
+			}
+			#container {
+				width: 50%;
+				margin: 10px;
+			}
+			.card{margin-right:75px;margin-bottom:20px;height:320px;border:2px solid #A0A0A0;width:230px;border:2px solid #A0A0A0;background-color:#EEEEEE;position:relative;display:inline-block;}
+			.cardText{font-family:HelveticaNeue-CondensedBold; font-size:30px;}
+			.upvoteButton{width:75px;}
+		</style>
+		
+		<script>
+		    dojoConfig= {
+		        has: { "dojo-firebug": true },
+		        parseOnLoad: false,
+		        async: true,
+		        baseUrl: "./",
+		        packages: [{ name: "widget", location: "./widget" }]
+		    };
+		</script>
+		<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+		
+		
+		
+		
+		
+		
+		
+		<style type="text/css">
+			.card {
+				padding: 35px 26px;
+				margin: 15px;
+				width: 265px;
+				height: 394px;
+				-webkit-box-shadow: #BBB 10px 10px 10px;
+				-moz-box-shadow: #BBB 10px 10px 10px; 
+				box-shadow: #BBB 10px 10px 10px;"
+				-webkit-border-radius: 15px;
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+				border: 2px solid #000;
+				position: relative;
+			}
+			.white {
+				color: #000;
+				background: #FFF;
+			}
+			.black {
+				color: #FFF;
+				background: #000;
+			}
+			.cardText {
+				font: 27px Helvetica;
+				font-weight: 500;
+				letter-spacing: 0.5px;
+				word-spacing: 2px;
+			}
+			.cardFooter {
+				font: 11px Helvetica;
+				font-weight: 200;
+				position: absolute;
+				bottom: 0px;
+				padding: 0px 20px 20px 0px;
+				vertical-align: top;
+			}
+		</style>
+		
+		
+		
+		
+		<script>
+		require(["dojo/store/JsonRest",
+				 "dojo/store/Memory",
+				 "dojo/store/Cache",
+				 "dojox/grid/DataGrid",
+				 "dojo/data/ObjectStore",
+				 "dojo/query", 
+				 "dojo",
+				 "dojo/fx", 
+				 "dojox/gfx", 
+				 "dojo/dom-construct", 
+				 "dojox/gfx/utils", 
+				 "dojox/gfx/fx",
+				 "dojo/domReady!"], 
+		function(JsonRest, Memory, Cache, DataGrid, ObjectStore, query, dojo, coreFx, gfx, domConstruct){
+			
+			
+
+			var toDoDataStore = new ObjectStore({objectStore: new Cache(JsonRest({target: '../fah/card', sortParam: "sort"}), new Memory({ idProperty: 'id' }))});
+			
+/* 			var toDoCheckList = new CheckList({
+				store: toDoDataStore
+			}).placeAt(document.getElementById("checkListElement")); */
+					
+			var gridLayout = [
+				{ name: 'ID', field: 'id', width: '25px'/*, hidden: true */},
+				{ name: 'Title', field: 'text', editable: true, width: '350px', formatter: placeCard},
+				{ name: 'Rank', field: 'id', editable: false, width: '100px', formatter: formatRank}
+			];
+			
+			var grid = new DataGrid({
+				store: toDoDataStore,
+				structure: gridLayout,
+				keepRows: 1000,
+				rowsPerPage: 25,
+				autoHeight: 25
+			}, "gridElement");
+			grid.startup();
+			
+			
+			function placeCard(data) {
+				
+				//var obj = toDoDataStore.fetch;
+				
+				return createCard(data, "Friends Against Humanity", "black");
+			}
+			
+			function formatTitle(data) {
+				
+				return "<div id='cardRow"+ data +"'></div>";
+				
+			} 
+			
+			
+			function formatRank(data) {
+				
+				return"<button class='upvoteButton' onclick='upVote(" + data + ")'>upvote</button>";
+			}
+			function upVote(data){alert("upvote " + data);}
+			
+			
+			function createCard(){
+				createCard("TEST", "Time", "fun");
+			}
+			
+			function createCard(text, deck, color) {
+				var card = domConstruct.create("div");
+				if(color.toUpperCase() === "BLACK")
+					card.className = "black card";
+					card.className = "white card";
+				
+				var cardText =  domConstruct.create("div");
+				cardText.className = "cardText";
+				cardText.innerHTML = text;
+				
+				var footer =  domConstruct.create("div");
+				footer.className = "cardFooter";
+				footer.innerHTML = "<img src='/FriendsAgainstHumanity/img/cardLogo.png' /> " + deck;
+				
+				card.appendChild(cardText);
+				card.appendChild(footer);
+			
+				return card.outerHTML;
+			}
+					
+		});
+		
+		
+		</script>
+		
+		
+		
+		
+		
+		
+	</head>
+	
+	<body class="claro">
+		<div id="container">
+			<div id="gridElement" style="height:100%;"></div>
+			
+		</div>
+	</body>
+</html>
