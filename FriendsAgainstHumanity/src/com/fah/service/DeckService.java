@@ -80,7 +80,7 @@ public class DeckService {
 		BeanHandler<Deck> handler = new BeanHandler<Deck>(Deck.class);
 		Deck deck = new Deck();
 		try{
-			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND white = true", handler, id);
+			Deck result = query.query(conn, "SELECT * FROM cards where deck_id = ? AND black = true", handler, id);
 			if(result != null){
 				deck = result;
 			}
