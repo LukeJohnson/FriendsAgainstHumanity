@@ -4,19 +4,19 @@ import java.util.Date;
 
 public class Deck {
 	
-	private int 	deckId;
+	private int 	id;
 	private String 	name;
 	private String 	descr;
 	private int 	creatorId;
 	private Date 	created;
 	
 	
-	public int getDeckId(){
-		return deckId;
+	public int getId(){
+		return id;
 	}
 	
-	public void setDeckId(int deckId){
-		this.deckId = deckId; 
+	public void setId(int id){
+		this.id = id; 
 	}
 	
 	public String getName(){
