@@ -5,7 +5,7 @@
 		
 		<style type="text/css">
 			.card {
-				padding: 35px 26px;
+				padding: 26px 35px 50px 35px;
 				margin: 15px;
 				width: 265px;
 				height: 394px;
@@ -17,6 +17,7 @@
 				border-radius: 15px;
 				border: 2px solid #000;
 				position: relative;
+				overflow: hidden;
 			}
 			.white {
 				color: #000;
@@ -38,7 +39,8 @@
 				position: absolute;
 				bottom: 0px;
 				padding: 0px 20px 20px 0px;
-				vertical-align: top;
+				height: 50px;
+				overflow: hidden;
 			}
 		</style>
 		
@@ -49,6 +51,7 @@
 				
 				function createCard(text, deck, color) {
 					var card = domConstruct.create("div");
+					//card.setAttribute("id", "card_" + id);
 					if(color.toUpperCase() === "BLACK")
 						card.className = "black card";
 					else
@@ -68,20 +71,33 @@
 					return card;
 				}
 				
-				var whiteCard = createCard("Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail.", "Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity", "white");
-				dojo.place(whiteCard, "targetLocation");
+				//var whiteCard = createCard("Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail. Leaving an awkward voicemail.", "Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity Friends Against Humanity", "white");
+				//dojo.place(whiteCard, "targetLocation");
 				var blackCard = createCard("What's the most emo?", "Friends Against Humanity", "black");
 				dojo.place(blackCard, "targetLocation");
 				
-				/* dojo.animateProperty({
-			        node: anim8target,
+				var fadeOut = dojo.animateProperty({
+			        node: blackCard,
 			        properties: {
-			            top: : { start: 25, end: 150 },
+			            top: { start: 0, end: 150 },
 			            left: 0,
 			            opacity: { start: 1, end: 0 }
 			        },
-			        duration: 800
-			    }).play(); */
+			        duration: 800,
+			        rate: 0
+			    });
+				var fadeIn = dojo.animateProperty({
+			        node: blackCard,
+			        properties: {
+			            top: { start: 150, end: 0 },
+			            left: 0,
+			            opacity: { start: 0, end: 1 }
+			        },
+			        duration: 800,
+			        rate: 0
+			    });
+					
+				coreFx.chain([fadeOut, fadeIn]).play();
 
 			});
 		</script>
