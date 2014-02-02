@@ -32,7 +32,6 @@ public class VoteService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response castVote(Vote vote)throws URISyntaxException{
 		Connection conn = DatabaseUtil.getConnection();
-		DatabaseUtil.closeConnection(conn);
 		QueryRunner query = new QueryRunner();
 		int updateId = -1;
 		try{
