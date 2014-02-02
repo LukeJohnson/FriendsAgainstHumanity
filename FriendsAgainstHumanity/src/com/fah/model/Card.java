@@ -11,6 +11,8 @@ public class Card {
 	private int     creatorId;
 	private int		deckId;
 	private Date 	created;
+	private int		upvotes;
+	private int		downvotes;
 	
 	public int getId() {
 		return id;
@@ -54,5 +56,21 @@ public class Card {
 	
 	public Date getCreated(){
 		return created;
+	}
+	
+	public int getUpvotes(){
+		return upvotes;
+	}
+	
+	public void setUpvotes(int upvotes){
+		this.upvotes = upvotes;
+	}
+	
+	public int getDownvotes(){
+		return downvotes;
+	}
+	
+	public void setDownvotes(int downvotes){
+		this.downvotes = downvotes;
 	}
 }
