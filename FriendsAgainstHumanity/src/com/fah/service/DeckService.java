@@ -52,7 +52,7 @@ public class DeckService {
 	
 	@GET
 	@Path("{id}")
-	public Response get(@PathParam("id") int id){
+	public Response getDeckInfo(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
@@ -73,7 +73,7 @@ public class DeckService {
 	
 	@GET
 	@Path("{id}/black")
-	public Response get(@PathParam("id") int id){
+	public Response getBlackDeck(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
@@ -93,7 +93,7 @@ public class DeckService {
 	}
 	@GET
 	@Path("{id}/white")
-	public Response get(@PathParam("id") int id){
+	public Response getWhiteDeck(@PathParam("id") int id){
 		System.out.println("Get [id="+id+"]");
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner query = new QueryRunner();
