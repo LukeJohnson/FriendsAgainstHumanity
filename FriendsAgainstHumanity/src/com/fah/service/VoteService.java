@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -35,20 +36,19 @@ public class VoteService {
 	 *  - vote_id will be returned from queryVote to updateVoteId
 	 */
 	@PUT
-	@Path("{cardId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response castVote(Vote vote)throws URISyntaxException{
+	@Path("{cardId}/{vote}")
+	public Response castVote(@PathParam("cardId") int id, @PathParam("vote") int vote)throws URISyntaxException{
 		Connection conn = DatabaseUtil.getConnection();
 		QueryRunner queryVote = new QueryRunner();
 		QueryRunner queryCard = new QueryRunner();
 		int updateVoteId = -1;
 		int updateVoteCount = -1;
 		try{
-			updateVoteId = queryVote.update(conn, "INSERT INTO votes(card_id, up_vote, voter_id) VALUES ?, ?, ?", vote.getCard_id(), vote.isUp_vote(), vote.getVoter_id());
-			if(vote.isUp_vote()){
-				updateVoteCount = queryCard.update(conn, "UPDATE cards SET upvote = upvote + 1 WHERE id=?", vote.getCard_id());
-			}else{
-				updateVoteCount = queryCard.update(conn, "UPDATE cards SET downvote = downvote + 1 WHERE id=?", vote.getCard_id());
+			updateVoteId = queryVote.update(conn, "INSERT INTO votes(card_id, up_vote, voter_id) VALUES (?, ?, ?)",id, vote, 1);
+			if(vote == 1){
+				updateVoteCount = queryCard.update(conn, "UPDATE cards SET upvotes = upvotes + 1 WHERE id=?", id);
+			}else if(vote == 0){
+				updateVoteCount = queryCard.update(conn, "UPDATE cards SET downvotes = downvotes + 1 WHERE id=?", id);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
